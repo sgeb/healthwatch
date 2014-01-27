@@ -11,5 +11,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_welcome">Welcome!</string>
     <string name="hello_world">Hello world!</string>
+    <string name="authorize_app">Authorize App</string>
+    <string name="title_activity_auth_callback">Auth Callback</string>
+    <string name="auth_callback_authorized">This app is now authorized.</string>
 
 </resources>
