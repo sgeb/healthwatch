@@ -14,11 +14,24 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/auth_callback_progressBar"
+            android:layout_gravity="left|top"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true" />
+
         <TextView
             android:id="@+id/auth_callback_textview"
-            android:text="@string/auth_callback_authorized"
+            android:text="@string/auth_callback_authorizing"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/auth_callback_progressBar"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

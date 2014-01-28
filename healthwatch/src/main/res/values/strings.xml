@@ -13,7 +13,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="authorize_app">Authorize App</string>
     <string name="title_activity_auth_callback">Auth Callback</string>
-    <string name="auth_callback_authorized">This app is now authorized: %s</string>
-    <string name="auth_callback_not_authorized">Error during authorization: %s</string>
+    <string name="auth_callback_authorizing">Authorizing…</string>
+    <string name="auth_callback_auth_error">Error during authorization: %s</string>
+    <string name="auth_callback_authorized">Successfully authorized</string>
 
 </resources>
