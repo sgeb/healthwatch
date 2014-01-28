@@ -16,5 +16,6 @@
     <string name="auth_callback_authorizing">Authorizing…</string>
     <string name="auth_callback_auth_error">Error during authorization: %s</string>
     <string name="auth_callback_authorized">Successfully authorized</string>
+    <string name="auth_was_reset">Authorization reset, restarting app…</string>
 
 </resources>

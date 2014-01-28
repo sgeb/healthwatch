@@ -7,6 +7,10 @@
         android:title="@string/pref_header_general" />
 
     <header
+        android:fragment="me.sgeb.healthwatch.SettingsActivity$AccountPreferenceFragment"
+        android:title="@string/pref_header_account" />
+
+    <header
         android:fragment="me.sgeb.healthwatch.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 

@@ -41,8 +41,8 @@ public class AuthCallbackActivity extends Activity {
             public void success(String accessToken, Response response) {
                 new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
 
-                String message = getString(R.string.auth_callback_authorized);
-                Toast.makeText(AuthCallbackActivity.this, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(AuthCallbackActivity.this, R.string.auth_callback_authorized, Toast.LENGTH_LONG)
+                        .show();
 
                 Intent intent = new Intent(AuthCallbackActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
