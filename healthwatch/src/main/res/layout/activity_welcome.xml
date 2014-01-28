@@ -27,8 +27,7 @@
             android:id="@+id/welcome_button_authorize"
             android:layout_below="@id/welcome_textView"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:onClick="authorize" />
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
