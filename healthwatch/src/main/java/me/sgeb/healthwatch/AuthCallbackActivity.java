@@ -48,7 +48,7 @@ public class AuthCallbackActivity extends Activity {
             @Override
             public void success(String accessToken, Response response) {
                 new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
-                fetchUser();
+                redirectToMainActivity();
             }
 
             @Override
@@ -62,42 +62,14 @@ public class AuthCallbackActivity extends Activity {
         });
     }
 
-    private void fetchUser() {
-        HgClient client = HgClientFactory.createClient(new Preferences(this).getAuthAccessToken());
+    private void redirectToMainActivity() {
+        Toast.makeText(this, R.string.auth_callback_authorized, Toast.LENGTH_LONG)
+                .show();
 
-        client.getUser(new Callback<User>() {
-            @Override
-            public void success(User user, Response response) {
-                Log.d("xxx", "User: " + user);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
 
-                Toast.makeText(AuthCallbackActivity.this, R.string.auth_callback_authorized, Toast.LENGTH_LONG)
-                        .show();
-
-                Intent intent = new Intent(AuthCallbackActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-
-                finish();
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                String message = String.format(getString(R.string.auth_callback_auth_error),
-                        retrofitError);
-                Log.d("xxx", "retrofit failure: " + message);
-                textView.setText(message);
-                textView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        client.getWeightSetFeed(new Callback<WeightSetFeed>() {
-            @Override
-            public void success(WeightSetFeed weightSetFeed, Response response) {
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-            }
-        });
+        finish();
     }
 }
