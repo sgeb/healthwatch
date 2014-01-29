@@ -13,6 +13,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import me.sgeb.healthwatch.hgclient.AuthClient;
+import me.sgeb.healthwatch.hgclient.HgClient;
 import me.sgeb.healthwatch.hgclient.HgClientFactory;
 import me.sgeb.healthwatch.hgclient.model.User;
 import me.sgeb.healthwatch.hgclient.model.WeightSetFeed;
@@ -62,7 +63,9 @@ public class AuthCallbackActivity extends Activity {
     }
 
     private void fetchUser() {
-        HgClientFactory.getDefaultClient(new Preferences(this).getAuthAccessToken()).getUser(new Callback<User>() {
+        HgClient client = HgClientFactory.createClient(new Preferences(this).getAuthAccessToken());
+
+        client.getUser(new Callback<User>() {
             @Override
             public void success(User user, Response response) {
                 Log.d("xxx", "User: " + user);
@@ -87,7 +90,7 @@ public class AuthCallbackActivity extends Activity {
             }
         });
 
-        HgClientFactory.getDefaultClient(new Preferences(this).getAuthAccessToken()).getWeightSetFeed(new Callback<WeightSetFeed>() {
+        client.getWeightSetFeed(new Callback<WeightSetFeed>() {
             @Override
             public void success(WeightSetFeed weightSetFeed, Response response) {
             }
