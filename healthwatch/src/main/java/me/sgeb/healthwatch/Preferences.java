@@ -17,7 +17,11 @@ public class Preferences {
     }
 
     public boolean hasAuthAccessToken() {
-        return getSharedPreferencesAuth().getString(PREFS_AUTH_ACCESS_TOKEN, null) != null;
+        return getAuthAccessToken() != null;
+    }
+
+    public String getAuthAccessToken() {
+        return getSharedPreferencesAuth().getString(PREFS_AUTH_ACCESS_TOKEN, null);
     }
 
     private SharedPreferences getSharedPreferencesAuth() {
