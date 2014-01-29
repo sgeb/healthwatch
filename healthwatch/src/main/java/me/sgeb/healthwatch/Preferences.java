@@ -2,18 +2,18 @@ package me.sgeb.healthwatch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class Preferences {
-    private static final String PREFS_AUTH_FILE = "HealthWatchAuth";
-    private static final String PREFS_AUTH_ACCESS_TOKEN = "AccessToken";
-    private final Context context;
+    private static final String PREFS_AUTH_ACCESS_TOKEN = "auth_access_token";
+    private SharedPreferences defaultSharedPreferences;
 
     public Preferences(Context context) {
-        this.context = context;
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void setAuthAccessToken(String accessToken) {
-        getSharedPreferencesAuth().edit().putString(PREFS_AUTH_ACCESS_TOKEN, accessToken).apply();
+        defaultSharedPreferences.edit().putString(PREFS_AUTH_ACCESS_TOKEN, accessToken).apply();
     }
 
     public boolean hasAuthAccessToken() {
@@ -21,10 +21,7 @@ public class Preferences {
     }
 
     public String getAuthAccessToken() {
-        return getSharedPreferencesAuth().getString(PREFS_AUTH_ACCESS_TOKEN, null);
+        return defaultSharedPreferences.getString(PREFS_AUTH_ACCESS_TOKEN, null);
     }
 
-    private SharedPreferences getSharedPreferencesAuth() {
-        return context.getSharedPreferences(PREFS_AUTH_FILE, Context.MODE_PRIVATE);
-    }
 }
