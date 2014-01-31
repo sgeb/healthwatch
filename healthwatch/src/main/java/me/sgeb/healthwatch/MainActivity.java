@@ -55,22 +55,22 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         Fragment fragment;
-//        switch (position) {
-//            case 0:
-//                fragment = WeightEntryFragment.newInstance(null, null);
-//                break;
-//            case 1:
-//                fragment = WeightListFragment.newInstance(null, null);
-//                break;
-//            default:
+        switch (position) {
+            case 0:
+                fragment = WeightEntryFragment.newInstance(null, null);
+                break;
+            case 1:
+                fragment = WeightListFragment.newInstance(null, null);
+                break;
+            default:
                 fragment = PlaceholderFragment.newInstance(position + 1);
-//                break;
-//        }
+                break;
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-//        onSectionAttached(position + 1);
+        onSectionAttached(position + 1);
     }
 
     public void onSectionAttached(int number) {
@@ -132,6 +132,9 @@ public class MainActivity extends Activity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        public PlaceholderFragment() {
+        }
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -142,9 +145,6 @@ public class MainActivity extends Activity
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
-        }
-
-        public PlaceholderFragment() {
         }
 
         @Override
