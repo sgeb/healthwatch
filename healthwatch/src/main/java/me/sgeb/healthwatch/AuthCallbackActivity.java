@@ -13,10 +13,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import me.sgeb.healthwatch.hgclient.AuthClient;
-import me.sgeb.healthwatch.hgclient.HgClient;
-import me.sgeb.healthwatch.hgclient.HgClientFactory;
-import me.sgeb.healthwatch.hgclient.model.User;
-import me.sgeb.healthwatch.hgclient.model.WeightSetFeed;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -44,22 +40,30 @@ public class AuthCallbackActivity extends Activity {
 
     private void fetchAccessToken() {
         Uri intentData = getIntent().getData();
-        new AuthClient().tradeIntentDataForAccessToken(intentData, new Callback<String>() {
-            @Override
-            public void success(String accessToken, Response response) {
-                new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
-                redirectToMainActivity();
-            }
+        AuthClient authClient = new AuthClient();
 
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                String message = String.format(getString(R.string.auth_callback_auth_error),
-                        retrofitError.getResponse().getStatus());
-                Log.d("xxx", "retrofit failure: " + message);
-                textView.setText(message);
-                textView.setVisibility(View.VISIBLE);
-            }
-        });
+        if (!authClient.isIntentDataValid(intentData)) {
+            textView.setText("Not a valid auth callback, aborting.");
+            textView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+        } else {
+            authClient.tradeIntentDataForAccessToken(intentData, new Callback<String>() {
+                @Override
+                public void success(String accessToken, Response response) {
+                    new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
+                    redirectToMainActivity();
+                }
+
+                @Override
+                public void failure(RetrofitError retrofitError) {
+                    String message = String.format(getString(R.string.auth_callback_auth_error),
+                            retrofitError.getResponse().getStatus());
+                    Log.d("xxx", "retrofit failure: " + message);
+                    textView.setText(message);
+                    textView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     private void redirectToMainActivity() {
