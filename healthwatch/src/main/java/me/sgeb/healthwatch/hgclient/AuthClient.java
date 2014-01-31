@@ -38,7 +38,7 @@ public class AuthClient {
 
     public String getUserAuthorizeUri() {
         return Uri.parse(AUTH_BASE_URL + AUTH_USER_AUTHORIZE_PATH
-                + "?response_type=code&client_id=" + mySecretKeys.getClientId())
+                + "?response_type=code&client_id=" + mySecretKeys.getHealthGraphClientId())
                 + "&redirect_uri=" + Uri.encode(REDIRECT_URI);
     }
 
@@ -71,8 +71,9 @@ public class AuthClient {
     }
 
     private void fetchAccessToken(String authCode, final Callback<String> cb) {
-        authService.fetchAccessToken("authorization_code", authCode, mySecretKeys.getClientId(),
-                mySecretKeys.getClientSecret(), REDIRECT_URI, new Callback<AccessTokenResponse>() {
+        authService.fetchAccessToken("authorization_code", authCode,
+                mySecretKeys.getHealthGraphClientId(), mySecretKeys.getHealthGraphClientSecret(),
+                REDIRECT_URI, new Callback<AccessTokenResponse>() {
             @Override
             public void success(AccessTokenResponse atr, Response response) {
                 cb.success(atr != null ? atr.accessToken : null, response);
