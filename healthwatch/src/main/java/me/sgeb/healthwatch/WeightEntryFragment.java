@@ -73,7 +73,7 @@ public class WeightEntryFragment extends Fragment {
         HgClientHelper.createClient(authAccessToken).postWeightSet(weightSet, new ResponseCallback() {
             @Override
             public void success(Response response) {
-                Toast.makeText(getActivity(), "Successfully submitted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_success), Toast.LENGTH_LONG).show();
                 resetInputViews();
                 enableViews();
             }
@@ -85,7 +85,7 @@ public class WeightEntryFragment extends Fragment {
                         + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
                 Log.d("WeightEntry", "Response body: "
                         + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
-                Toast.makeText(getActivity(), "Could not submit entry", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_failure), Toast.LENGTH_LONG).show();
                 enableViews();
             }
         });

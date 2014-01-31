@@ -8,9 +8,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_welcome">Welcome!</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="authorize_app">Authorize App</string>
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_introduction_text">HealthWatch keeps track of your health and body
+        measurements. Your data will be stored on the HealthGraph, which is also used by the famous
+        RunKeeper app.\n\nYou are the sole owner of your data. You can access your data anytime
+        directly through RunKeeper, even if you decide to uninstall
+        this app.\n\nIn order to read and write to the HealthGraph you must authorize this app with
+        your RunKeeper account. You can either login if you already have an account or sign up
+        (it\'s free).\n\nYou must then authorize this app with your account and will be
+        redirected back to this screen.
+    </string>
+    <string name="welcome_button_authorize_app">Authorize \u2192</string>
     <string name="title_activity_auth_callback">Auth Callback</string>
     <string name="auth_callback_authorizing">Authorizing…</string>
     <string name="auth_callback_auth_error">Error during authorization: %s</string>
@@ -21,5 +29,7 @@
     <string name="weight_entry_weight">Weight (kg)</string>
     <string name="weight_entry_fat_percent">Body Fat (%)</string>
     <string name="weight_entry_submit">Submit</string>
+    <string name="weight_entry_submit_success">Successfully submitted</string>
+    <string name="weight_entry_submit_failure">Could not submit entry</string>
 
 </resources>

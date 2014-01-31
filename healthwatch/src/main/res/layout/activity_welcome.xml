@@ -6,7 +6,8 @@
     tools:context="me.sgeb.healthwatch.WelcomeActivity"
     tools:ignore="MergeRootFrame">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -15,20 +16,30 @@
         android:paddingBottom="@dimen/activity_vertical_margin">
 
         <TextView
-            android:text="@string/hello_world"
+            android:text="@string/welcome_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/welcome_textView" />
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <TextView
+            android:id="@+id/welcome_textview"
+            android:text="@string/welcome_introduction_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:linksClickable="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/authorize_app"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/welcome_button_authorize_app"
             android:id="@+id/welcome_button_authorize"
-            android:layout_below="@id/welcome_textView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_gravity="right" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
