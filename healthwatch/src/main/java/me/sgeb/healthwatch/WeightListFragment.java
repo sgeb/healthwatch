@@ -1,7 +1,6 @@
 package me.sgeb.healthwatch;
 
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
  * A simple {@link android.support.v4.app.Fragment} subclass.
  * Use the {@link WeightListFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class WeightListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -43,6 +41,7 @@ public class WeightListFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public WeightListFragment() {
         // Required empty public constructor
     }

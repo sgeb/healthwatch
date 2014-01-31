@@ -11,7 +11,6 @@ import android.view.ViewGroup;
  * A simple {@link android.support.v4.app.Fragment} subclass.
  * Use the {@link WeightFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class WeightFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +40,7 @@ public class WeightFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public WeightFragment() {
         // Required empty public constructor
     }
