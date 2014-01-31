@@ -55,25 +55,31 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         Fragment fragment;
-        if (position == 0) {
-            fragment = WeightFragment.newInstance(null, null);
-        } else {
-            fragment = PlaceholderFragment.newInstance(position + 1);
-        }
+//        switch (position) {
+//            case 0:
+//                fragment = WeightEntryFragment.newInstance(null, null);
+//                break;
+//            case 1:
+//                fragment = WeightListFragment.newInstance(null, null);
+//                break;
+//            default:
+                fragment = PlaceholderFragment.newInstance(position + 1);
+//                break;
+//        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-        onSectionAttached(position + 1);
+//        onSectionAttached(position + 1);
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_weight);
+                mTitle = getString(R.string.title_weight_entry);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_weight_list);
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
