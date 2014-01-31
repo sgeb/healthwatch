@@ -4,7 +4,6 @@
     <string name="app_name">HealthWatch</string>
     <string name="title_weight_entry">New Weight Entry</string>
     <string name="title_weight_list">Weight List</string>
-    <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -18,5 +17,9 @@
     <string name="auth_callback_authorized">Successfully authorized</string>
     <string name="auth_was_reset">Authorization reset, restarting app…</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="weight_entry_title">Enter weight data</string>
+    <string name="weight_entry_weight">Weight (kg)</string>
+    <string name="weight_entry_fat_percent">Body Fat (%)</string>
+    <string name="weight_entry_submit">Submit</string>
 
 </resources>

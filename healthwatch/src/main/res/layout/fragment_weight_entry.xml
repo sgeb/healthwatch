@@ -4,10 +4,41 @@
     android:layout_height="match_parent"
     tools:context="me.sgeb.healthwatch.WeightEntryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/weight_entry_title" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weight_entry_weight_input"
+            android:numeric="integer|decimal"
+            android:inputType="numberDecimal"
+            android:hint="@string/weight_entry_weight" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weight_entry_fat_percent_entry"
+            android:numeric="integer|decimal"
+            android:inputType="numberDecimal"
+            android:hint="@string/weight_entry_fat_percent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:id="@+id/weight_entry_submit_button"
+            android:text="@string/weight_entry_submit" />
+
+    </LinearLayout>
 
 </FrameLayout>
