@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">HealthWatch</string>
-    <string name="title_section1">Section 1</string>
+    <string name="title_weight">Weight</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -17,5 +17,6 @@
     <string name="auth_callback_auth_error">Error during authorization: %s</string>
     <string name="auth_callback_authorized">Successfully authorized</string>
     <string name="auth_was_reset">Authorization reset, restarting app…</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
