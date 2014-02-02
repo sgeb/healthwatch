@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.sgeb.healthwatch.WeightListFragment">
+
+    <item
+        android:id="@+id/weightlist_menu_new_weight"
+        android:title="@string/menu_title_weight_new"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_add" />
+
+</menu>

@@ -81,8 +81,7 @@ public class WeightEntryFragment extends Fragment {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_SUBMIT_SUCCESS);
 
                 Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_success), Toast.LENGTH_LONG).show();
-                resetInputViews();
-                enableViews();
+                getFragmentManager().popBackStack();
             }
 
             @Override
@@ -129,10 +128,5 @@ public class WeightEntryFragment extends Fragment {
         weightInput.setEnabled(true);
         fatPercentInput.setEnabled(true);
         submitButton.setEnabled(true);
-    }
-
-    private void resetInputViews() {
-        weightInput.setText("");
-        fatPercentInput.setText("");
     }
 }

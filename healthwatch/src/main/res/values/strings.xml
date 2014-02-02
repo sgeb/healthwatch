@@ -2,11 +2,10 @@
 <resources>
 
     <string name="app_name">HealthWatch</string>
-    <string name="title_weight_entry">New Weight Entry</string>
-    <string name="title_weight_list">Weight List</string>
+    <string name="title_weight_list">Weight</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="menu_title_weight_new">New weight</string>
     <string name="action_settings">Settings</string>
     <string name="welcome_title">Welcome!</string>
     <string name="welcome_introduction_text">HealthWatch keeps track of your health and body

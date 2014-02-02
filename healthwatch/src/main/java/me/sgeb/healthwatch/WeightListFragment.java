@@ -5,6 +5,9 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -47,6 +50,7 @@ public class WeightListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_ONCREATEVIEW);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -59,18 +63,27 @@ public class WeightListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        refreshWeightList();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        refreshWeightList();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.weightlist, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     private void refreshWeightList() {
@@ -99,11 +112,21 @@ public class WeightListFragment extends ListFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.weightlist_menu_new_weight:
+                navigateToWeightEntry();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
+    private void navigateToWeightEntry() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new WeightEntryFragment())
+                .addToBackStack(null)
+                .commit();
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

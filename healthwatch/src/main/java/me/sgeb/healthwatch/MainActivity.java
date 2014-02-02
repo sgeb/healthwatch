@@ -54,9 +54,6 @@ public class MainActivity extends Activity
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new WeightEntryFragment();
-                break;
-            case 1:
                 fragment = new WeightListFragment();
                 break;
         }
@@ -72,9 +69,6 @@ public class MainActivity extends Activity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_weight_entry);
-                break;
-            case 2:
                 mTitle = getString(R.string.title_weight_list);
                 break;
         }
