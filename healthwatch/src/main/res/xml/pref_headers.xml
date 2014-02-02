@@ -6,16 +6,4 @@
         android:fragment="me.sgeb.healthwatch.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
-    <header
-        android:fragment="me.sgeb.healthwatch.SettingsActivity$AccountPreferenceFragment"
-        android:title="@string/pref_header_account" />
-
-    <header
-        android:fragment="me.sgeb.healthwatch.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
-
-    <header
-        android:fragment="me.sgeb.healthwatch.SettingsActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
-
 </preference-headers>
