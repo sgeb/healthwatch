@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.testflightapp.lib.TestFlight;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -40,6 +42,7 @@ public class WeightEntryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weight_entry, container, false);
         ButterKnife.inject(this, view);
+        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_ONCREATEVIEW);
 
         submitButton.setEnabled(false);
         weightInput.addTextChangedListener(new TextWatcher() {
@@ -61,6 +64,8 @@ public class WeightEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_ONDESTROYVIEW);
         ButterKnife.reset(this);
     }
 
@@ -73,6 +78,8 @@ public class WeightEntryFragment extends Fragment {
         HgClientHelper.createClient(authAccessToken).postWeightSet(weightSet, new ResponseCallback() {
             @Override
             public void success(Response response) {
+                TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_SUBMIT_SUCCESS);
+
                 Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_success), Toast.LENGTH_LONG).show();
                 resetInputViews();
                 enableViews();
@@ -80,11 +87,14 @@ public class WeightEntryFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError retrofitError) {
+                TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_SUBMIT_FAILURE);
+
                 Log.d("WeightEntry", "Save WeightSet failed");
                 Log.d("WeightEntry", "Response headers: \n"
                         + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
                 Log.d("WeightEntry", "Response body: "
                         + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
+
                 Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_failure), Toast.LENGTH_LONG).show();
                 enableViews();
             }

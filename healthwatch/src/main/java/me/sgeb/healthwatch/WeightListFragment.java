@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.testflightapp.lib.TestFlight;
+
 import java.text.DateFormat;
 import java.util.List;
 
@@ -42,6 +44,19 @@ public class WeightListFragment extends ListFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_ONCREATEVIEW);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_ONDESTROYVIEW);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -63,17 +78,21 @@ public class WeightListFragment extends ListFragment {
         client.getWeightSetFeed(new Callback<WeightSetFeed>() {
             @Override
             public void success(WeightSetFeed weightSetFeed, Response response) {
+                TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
                 setListAdapter(new WeightListAdapter(getActivity(),
                         R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems()));
             }
 
             @Override
             public void failure(RetrofitError retrofitError) {
+                TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_FAILURE);
+
                 Log.d("WeightList", "Fetch weight list failed");
                 Log.d("WeightList", "Response headers: \n"
                         + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
                 Log.d("WeightList", "Response body: "
                         + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
+
                 Toast.makeText(getActivity(), getString(R.string.weight_list_fetch_failure), Toast.LENGTH_LONG).show();
             }
         });
