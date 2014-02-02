@@ -13,6 +13,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.testflightapp.lib.TestFlight;
+
 import java.util.List;
 
 /**
@@ -35,6 +37,11 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TestFlight.passCheckpoint(MyCheckpoints.PREFS_ONCREATE);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class SettingsActivity extends PreferenceActivity {
             resetAuthButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
+                    TestFlight.passCheckpoint(MyCheckpoints.PREFS_RESET_AUTH);
+
                     new Preferences(SettingsActivity.this).setAuthAccessToken(null);
                     Toast.makeText(SettingsActivity.this, R.string.auth_was_reset, Toast.LENGTH_LONG)
                             .show();

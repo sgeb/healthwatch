@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.testflightapp.lib.TestFlight;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import me.sgeb.healthwatch.hgclient.AuthClient;
@@ -30,11 +32,13 @@ public class AuthCallbackActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_callback);
         ButterKnife.inject(this);
+        TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_ONCREATE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_ONRESUME);
         fetchAccessToken();
     }
 
@@ -43,6 +47,7 @@ public class AuthCallbackActivity extends Activity {
         AuthClient authClient = new AuthClient();
 
         if (!authClient.isIntentDataValid(intentData)) {
+            TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_INTENT_DATA_INVALID);
             textView.setText("Not a valid auth callback, aborting.");
             textView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
@@ -50,12 +55,14 @@ public class AuthCallbackActivity extends Activity {
             authClient.tradeIntentDataForAccessToken(intentData, new Callback<String>() {
                 @Override
                 public void success(String accessToken, Response response) {
+                    TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_FETCH_TOKEN_SUCCESS);
                     new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
                     redirectToMainActivity();
                 }
 
                 @Override
                 public void failure(RetrofitError retrofitError) {
+                    TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_FETCH_TOKEN_FAILURE);
                     String message = String.format(getString(R.string.auth_callback_auth_error),
                             retrofitError.getResponse().getStatus());
                     Log.d("xxx", "retrofit failure: " + message);
