@@ -80,7 +80,7 @@ public class WeightEntryFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.d("WeightEntry", "POST failed");
+                Log.d("WeightEntry", "Save WeightSet failed");
                 Log.d("WeightEntry", "Response headers: \n"
                         + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
                 Log.d("WeightEntry", "Response body: "

@@ -1,66 +1,176 @@
 package me.sgeb.healthwatch;
 
-
-import android.app.Fragment;
+import android.app.Activity;
+import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.util.List;
+
+import me.sgeb.healthwatch.hgclient.HgClient;
+import me.sgeb.healthwatch.hgclient.HgClientHelper;
+import me.sgeb.healthwatch.hgclient.model.WeightSet;
+import me.sgeb.healthwatch.hgclient.model.WeightSetFeed;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass.
- * Use the {@link WeightListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A fragment representing a list of Items.
+ * <p/>
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link Callbacks}
+ * interface.
  */
-public class WeightListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class WeightListFragment extends ListFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private OnFragmentInteractionListener mListener;
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WeightListFragment.
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
      */
-    // TODO: Rename and change types and number of parameters
-    public static WeightListFragment newInstance(String param1, String param2) {
-        WeightListFragment fragment = new WeightListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public WeightListFragment() {
-        // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weight_list, container, false);
+    public void onResume() {
+        super.onResume();
+        refreshWeightList();
+    }
+
+    private void refreshWeightList() {
+        HgClient client = HgClientHelper.createClient(new Preferences(getActivity()).getAuthAccessToken());
+        client.getWeightSetFeed(new Callback<WeightSetFeed>() {
+            @Override
+            public void success(WeightSetFeed weightSetFeed, Response response) {
+                setListAdapter(new WeightListAdapter(getActivity(),
+                        R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems()));
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("WeightList", "Fetch weight list failed");
+                Log.d("WeightList", "Response headers: \n"
+                        + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
+                Log.d("WeightList", "Response body: "
+                        + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
+                Toast.makeText(getActivity(), getString(R.string.weight_list_fetch_failure), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        if (null != mListener) {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+            // mListener.onFragmentInteraction(some_resource_id);
+        }
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(String id);
+    }
+
+    private class WeightListAdapter extends ArrayAdapter<WeightSet> {
+        private final Activity context;
+        private final int textViewResourceId;
+        private final List<WeightSet> weightSets;
+
+        private WeightListAdapter(Activity context, int textViewResourceId, List<WeightSet> weightSets) {
+            super(context, textViewResourceId, weightSets);
+            this.context = context;
+            this.textViewResourceId = textViewResourceId;
+            this.weightSets = weightSets;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            WeightSet weightSet = weightSets.get(position);
+
+            View rowView = convertView;
+            if (rowView == null) {
+                LayoutInflater inflater = context.getLayoutInflater();
+                rowView = inflater.inflate(textViewResourceId, null);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.date = (TextView) rowView.findViewById(R.id.weightlist_date_textview);
+                viewHolder.weight = (TextView) rowView.findViewById(R.id.weightlist_weight_textview);
+                viewHolder.fatPercent = (TextView) rowView.findViewById(R.id.weightlist_fatpercent_textview);
+                rowView.setTag(viewHolder);
+            }
+
+            ViewHolder holder = (ViewHolder) rowView.getTag();
+            holder.weightSetUri = weightSet.getUri();
+
+            String dateStr = DateFormat.getDateInstance().format(weightSet.getTimestamp());
+            holder.date.setText(dateStr);
+
+            Double weight = weightSet.getWeight();
+            if (weight == null) {
+                holder.weight.setVisibility(View.GONE);
+                holder.weight.setText(null);
+            } else {
+                holder.weight.setVisibility(View.VISIBLE);
+                holder.weight.setText(String.format("%.1f kg", weight));
+            }
+
+            Double fatPercent = weightSet.getFatPercent();
+            if (fatPercent == null) {
+                holder.fatPercent.setVisibility(View.GONE);
+                holder.fatPercent.setText(null);
+            } else {
+                holder.fatPercent.setVisibility(View.VISIBLE);
+                holder.fatPercent.setText(String.format("%.1f %%", fatPercent));
+            }
+
+            return rowView;
+        }
+    }
+
+    private class ViewHolder {
+        public TextView date;
+        public TextView weight;
+        public TextView fatPercent;
+        public String weightSetUri;
+    }
 }

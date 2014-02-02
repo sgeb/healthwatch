@@ -31,5 +31,6 @@
     <string name="weight_entry_submit">Submit</string>
     <string name="weight_entry_submit_success">Successfully submitted</string>
     <string name="weight_entry_submit_failure">Could not submit entry</string>
+    <string name="weight_list_fetch_failure">Could not fetch weight list</string>
 
 </resources>

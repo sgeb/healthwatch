@@ -6,13 +6,14 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 ;
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, WeightListFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -56,7 +57,7 @@ public class MainActivity extends Activity
                 fragment = new WeightEntryFragment();
                 break;
             case 1:
-                fragment = WeightListFragment.newInstance(null, null);
+                fragment = new WeightListFragment();
                 break;
         }
 
@@ -94,7 +95,7 @@ public class MainActivity extends Activity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
             return true;
         }
@@ -114,4 +115,9 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+        Log.d("xxx", "onFragmentInteraction");
+
+    }
 }
