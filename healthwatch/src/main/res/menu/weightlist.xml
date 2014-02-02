@@ -8,4 +8,9 @@
         android:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_add" />
 
+    <item
+        android:id="@+id/weightlist_menu_reload"
+        android:title="@string/menu_title_reload"
+        android:showAsAction="withText|ifRoom" />
+
 </menu>

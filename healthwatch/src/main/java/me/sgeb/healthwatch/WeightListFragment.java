@@ -87,6 +87,7 @@ public class WeightListFragment extends ListFragment {
     }
 
     private void refreshWeightList() {
+        if (isResumed()) setListShown(false);
         HgClient client = HgClientHelper.createClient(new Preferences(getActivity()).getAuthAccessToken());
         client.getWeightSetFeed(new Callback<WeightSetFeed>() {
             @Override
@@ -94,6 +95,7 @@ public class WeightListFragment extends ListFragment {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
                 setListAdapter(new WeightListAdapter(getActivity(),
                         R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems()));
+                setListShown(true);
             }
 
             @Override
@@ -116,6 +118,9 @@ public class WeightListFragment extends ListFragment {
         switch (item.getItemId()) {
             case R.id.weightlist_menu_new_weight:
                 navigateToWeightEntry();
+                return true;
+            case R.id.weightlist_menu_reload:
+                refreshWeightList();
                 return true;
         }
         return super.onOptionsItemSelected(item);
