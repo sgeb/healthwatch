@@ -1,8 +1,6 @@
 package me.sgeb.healthwatch;
 
 public class MyCheckpoints {
-    public static final String APP_STARTED = "app_started";
-
     public static final String WEIGHT_ENTRY_ONCREATEVIEW = "weight_entry_oncreateview";
     public static final String WEIGHT_ENTRY_ONDESTROYVIEW = "weight_entry_ondestroyview";
     public static final String WEIGHT_ENTRY_SUBMIT_SUCCESS = "weight_entry_submit_success";
@@ -21,4 +19,7 @@ public class MyCheckpoints {
 
     public static final String PREFS_ONCREATE = "prefs_oncreate";
     public static final String PREFS_RESET_AUTH = "prefs_reset_auth";
+
+    public static final String WEIGHT_DELETE_SUCCESS = "weight_delete_success";
+    public static final String WEIGHT_DELETE_FAILURE = "weight_delete_failure";
 }

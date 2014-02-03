@@ -29,6 +29,7 @@ import me.sgeb.healthwatch.hgclient.HgClientHelper;
 import me.sgeb.healthwatch.hgclient.model.WeightSet;
 import me.sgeb.healthwatch.hgclient.model.WeightSetFeed;
 import retrofit.Callback;
+import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -42,6 +43,7 @@ import retrofit.client.Response;
 public class WeightListFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
+    private HgClient hgClient;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,10 +54,10 @@ public class WeightListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
         TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_ONCREATEVIEW);
+        hgClient = HgClientHelper.createClient(new Preferences(getActivity()).getAuthAccessToken());
         setHasOptionsMenu(true);
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -99,8 +101,7 @@ public class WeightListFragment extends ListFragment {
             setListShown(false);
         }
 
-        HgClient client = HgClientHelper.createClient(new Preferences(getActivity()).getAuthAccessToken());
-        client.getWeightSetFeed(new Callback<WeightSetFeed>() {
+        hgClient.getWeightSetFeed(new Callback<WeightSetFeed>() {
             @Override
             public void success(WeightSetFeed weightSetFeed, Response response) {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
@@ -124,7 +125,8 @@ public class WeightListFragment extends ListFragment {
                 Log.d("WeightList", "Response body: "
                         + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
 
-                Toast.makeText(getActivity(), getString(R.string.weight_list_fetch_failure), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),
+                        R.string.weight_list_fetch_failure, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -186,6 +188,7 @@ public class WeightListFragment extends ListFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
+
         void hideNavigationDrawerIndicator();
     }
 
@@ -268,6 +271,14 @@ public class WeightListFragment extends ListFragment {
         public int countSelection() {
             return selection.size();
         }
+
+        public List<WeightSet> getSelectedWeightSets() {
+            List<WeightSet> result = new ArrayList<WeightSet>();
+            for (Integer integer : selection) {
+                result.add(weightSets.get(integer));
+            }
+            return result;
+        }
     }
 
     private class ViewHolder {
@@ -304,11 +315,41 @@ public class WeightListFragment extends ListFragment {
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.item_delete:
-                    Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
-                    adapter.clearSelection();
-                    actionMode.finish();
+                    deleteWeightSets(actionMode, adapter.getSelectedWeightSets());
+                    return true;
             }
             return false;
+        }
+
+        private void deleteWeightSets(final ActionMode actionMode, List<WeightSet> weightSets) {
+            for (WeightSet weightSet : weightSets) {
+                hgClient.deleteWeighSet(weightSet.getId(), new ResponseCallback() {
+                    @Override
+                    public void success(Response response) {
+                        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_DELETE_SUCCESS);
+                        Toast.makeText(getActivity(),
+                                R.string.weight_delete_success, Toast.LENGTH_LONG).show();
+
+                        adapter.clearSelection();
+                        actionMode.finish();
+                        refreshWeightList();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError retrofitError) {
+                        TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_DELETE_FAILURE);
+
+                        Log.d("WeightList", "Fetch weight list failed");
+                        Log.d("WeightList", "Response headers: \n"
+                                + HgClientHelper.getResponseHeadersAsString(retrofitError.getResponse()));
+                        Log.d("WeightList", "Response body: "
+                                + HgClientHelper.getResponseBodyAsString(retrofitError.getResponse()));
+
+                        Toast.makeText(getActivity(),
+                                R.string.weight_delete_failure, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
 
         @Override

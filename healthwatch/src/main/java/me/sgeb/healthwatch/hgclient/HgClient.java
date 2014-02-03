@@ -5,25 +5,38 @@ import me.sgeb.healthwatch.hgclient.model.WeightSet;
 import me.sgeb.healthwatch.hgclient.model.WeightSetFeed;
 import retrofit.Callback;
 import retrofit.ResponseCallback;
-import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.http.Path;
 
 public interface HgClient {
-    final String ACCEPT = "Accept: ";
-    final String CONTENT_TYPE = "Content-Type: ";
+    // Path constants
+    final String PATH_WEIGHT = "/weight";
+    final String PATH_USER = "/user";
 
-    @GET("/user")
-    @Headers(ACCEPT + "application/vnd.com.runkeeper.User+json")
+    // Header constants
+    final String HEADER_ACCEPT = "Accept: ";
+    final String HEADER_CONTENT_TYPE = "Content-Type: ";
+
+    // User
+
+    @GET(PATH_USER)
+    @Headers(HEADER_ACCEPT + "application/vnd.com.runkeeper.User+json")
     void getUser(Callback<User> cb);
 
-    @GET("/weight")
-    @Headers(ACCEPT + "application/vnd.com.runkeeper.WeightSetFeed+json")
+    // Weight
+
+    @GET(PATH_WEIGHT)
+    @Headers(HEADER_ACCEPT + "application/vnd.com.runkeeper.WeightSetFeed+json")
     void getWeightSetFeed(Callback<WeightSetFeed> cb);
 
-    @POST("/weight")
-    @Headers(CONTENT_TYPE + "application/vnd.com.runkeeper.NewWeightSet+json")
+    @POST(PATH_WEIGHT)
+    @Headers(HEADER_CONTENT_TYPE + "application/vnd.com.runkeeper.NewWeightSet+json")
     void postWeightSet(@Body WeightSet weightSet, ResponseCallback cb);
+
+    @DELETE(PATH_WEIGHT + "/{id}")
+    void deleteWeighSet(@Path("id") String id, ResponseCallback cb);
 }

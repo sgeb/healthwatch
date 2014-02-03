@@ -12,7 +12,6 @@ public class MyApplication extends Application {
 
         // Initialize TestFlight with app token
         TestFlight.takeOff(this, new MySecretKeys().getTestFlightAppToken());
-        TestFlight.passCheckpoint(MyCheckpoints.APP_STARTED);
     }
 
 }

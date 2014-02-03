@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import me.sgeb.healthwatch.hgclient.HgClient;
+
 public class WeightSet {
     private String uri;
     private Date timestamp;
@@ -13,6 +15,14 @@ public class WeightSet {
 
     public WeightSet() {
         this.timestamp = new Date();
+    }
+
+    public String getId() {
+        String res = null;
+        if (uri != null && !uri.isEmpty()) {
+            res = uri.replace(HgClient.PATH_WEIGHT + "/", "");
+        }
+        return res;
     }
 
     public void setWeight(Double weight) {
