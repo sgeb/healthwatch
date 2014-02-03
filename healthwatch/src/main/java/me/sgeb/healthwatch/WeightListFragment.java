@@ -302,6 +302,7 @@ public class WeightListFragment extends ListFragment {
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.item_delete:
+                    Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
                     adapter.clearSelection();
                     actionMode.finish();
             }
