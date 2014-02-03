@@ -42,24 +42,28 @@ public class HgClientHelper {
 
     public static String getResponseHeadersAsString(Response response) {
         StringBuilder sb = new StringBuilder();
-        for (Header header : response.getHeaders()) {
-            sb.append(header.getName() + ": " + header.getValue() + "\n");
+        if (response != null) {
+            for (Header header : response.getHeaders()) {
+                sb.append(header.getName() + ": " + header.getValue() + "\n");
+            }
         }
         return sb.toString();
     }
 
     public static String getResponseBodyAsString(Response response) {
-        InputStream in = null;
-        try {
-            in = response.getBody().in();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String theString = "";
+        if (response != null) {
+            InputStream in = null;
+            try {
+                in = response.getBody().in();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Scanner scanner = new Scanner(in, "UTF-8").useDelimiter("\\A");
+            theString = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
         }
-
-        Scanner scanner = new Scanner(in, "UTF-8").useDelimiter("\\A");
-        String theString = scanner.hasNext() ? scanner.next() : "";
-        scanner.close();
-
         return theString;
     }
 

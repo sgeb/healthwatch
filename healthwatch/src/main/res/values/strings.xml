@@ -32,5 +32,6 @@
     <string name="weight_entry_submit_failure">Could not submit entry</string>
     <string name="weight_list_fetch_failure">Could not fetch weight list</string>
     <string name="menu_title_reload">Reload</string>
+    <string name="item_delete">Delete</string>
 
 </resources>

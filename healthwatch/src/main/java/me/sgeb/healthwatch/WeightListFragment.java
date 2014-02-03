@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.testflightapp.lib.TestFlight;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.sgeb.healthwatch.hgclient.HgClient;
@@ -32,8 +36,8 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
+ * Activities containing this fragment MUST implement the
+ * {@link WeightListFragment.OnFragmentInteractionListener} interface.
  */
 public class WeightListFragment extends ListFragment {
 
@@ -90,14 +94,21 @@ public class WeightListFragment extends ListFragment {
     }
 
     private void refreshWeightList() {
-        if (isResumed()) setListShown(false);
+        if (isResumed()) {
+            // Show spinner when refreshing
+            setListShown(false);
+        }
+
         HgClient client = HgClientHelper.createClient(new Preferences(getActivity()).getAuthAccessToken());
         client.getWeightSetFeed(new Callback<WeightSetFeed>() {
             @Override
             public void success(WeightSetFeed weightSetFeed, Response response) {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
-                setListAdapter(new WeightListAdapter(getActivity(),
-                        R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems()));
+
+                final WeightListAdapter adapter = new WeightListAdapter(getActivity(),
+                        R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems());
+                setListAdapter(adapter);
+                setupListView(getListView(), adapter);
                 setListShown(true);
             }
 
@@ -116,11 +127,23 @@ public class WeightListFragment extends ListFragment {
         });
     }
 
+    private void setupListView(final ListView listView, final WeightListAdapter adapter) {
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new MyMultiChoiceModeListener(adapter));
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                listView.setItemChecked(position, !adapter.isPositionChecked(position));
+                return false;
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.weightlist_menu_new_weight:
-                navigateToWeightEntry();
+                navigateToWeightEntryFragment();
                 return true;
             case R.id.weightlist_menu_reload:
                 refreshWeightList();
@@ -129,7 +152,7 @@ public class WeightListFragment extends ListFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void navigateToWeightEntry() {
+    private void navigateToWeightEntryFragment() {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new WeightEntryFragment())
                 .addToBackStack(null)
@@ -139,11 +162,12 @@ public class WeightListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+        v.setSelected(true);
 
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            // mListener.onFragmentInteraction(some_resource_id);
+//            mListener.onFragmentInteraction(some_resource_id);
         }
     }
 
@@ -166,12 +190,14 @@ public class WeightListFragment extends ListFragment {
         private final Activity context;
         private final int textViewResourceId;
         private final List<WeightSet> weightSets;
+        private List<Integer> selection;
 
         private WeightListAdapter(Activity context, int textViewResourceId, List<WeightSet> weightSets) {
             super(context, textViewResourceId, weightSets);
             this.context = context;
             this.textViewResourceId = textViewResourceId;
             this.weightSets = weightSets;
+            this.selection = new ArrayList<Integer>();
         }
 
         @Override
@@ -215,6 +241,30 @@ public class WeightListFragment extends ListFragment {
 
             return rowView;
         }
+
+        public void clearSelection() {
+            selection.clear();
+            notifyDataSetChanged();
+        }
+
+        public void addSelection(int position) {
+            selection.add(position);
+            notifyDataSetChanged();
+        }
+
+        public boolean isPositionChecked(int position) {
+            return selection.contains(position);
+        }
+
+        public void removeSelection(int position) {
+            // without cast remove(int) instead of remove(Object) is chosen
+            selection.remove((Integer) position);
+            notifyDataSetChanged();
+        }
+
+        public int countSelection() {
+            return selection.size();
+        }
     }
 
     private class ViewHolder {
@@ -222,5 +272,50 @@ public class WeightListFragment extends ListFragment {
         public TextView weight;
         public TextView fatPercent;
         public String weightSetUri;
+    }
+
+    private class MyMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
+        private final WeightListAdapter adapter;
+
+        public MyMultiChoiceModeListener(WeightListAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            adapter.clearSelection();
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getActivity().getMenuInflater().inflate(R.menu.contextual_weight_actionbar, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.item_delete:
+                    adapter.clearSelection();
+                    actionMode.finish();
+            }
+            return false;
+        }
+
+        @Override
+        public void onItemCheckedStateChanged(ActionMode actionMode, int position,
+                                              long id, boolean checked) {
+            if (checked) {
+                adapter.addSelection(position);
+            } else {
+                adapter.removeSelection(position);
+            }
+            actionMode.setTitle(adapter.countSelection() + " selected");
+        }
     }
 }
