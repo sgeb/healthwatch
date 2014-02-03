@@ -263,6 +263,10 @@ public class NavigationDrawerFragment extends Fragment {
         return getActivity().getActionBar();
     }
 
+    public void setDrawerIndicatorEnabled(boolean b) {
+        mDrawerToggle.setDrawerIndicatorEnabled(b);
+    }
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */

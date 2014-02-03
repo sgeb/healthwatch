@@ -184,6 +184,7 @@ public class WeightListFragment extends ListFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
+        void hideNavigationDrawerIndicator();
     }
 
     private class WeightListAdapter extends ArrayAdapter<WeightSet> {

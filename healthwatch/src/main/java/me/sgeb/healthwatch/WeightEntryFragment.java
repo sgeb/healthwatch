@@ -1,12 +1,14 @@
 package me.sgeb.healthwatch;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,6 +37,15 @@ public class WeightEntryFragment extends Fragment {
 
     @InjectView(R.id.weight_entry_submit_button)
     Button submitButton;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ((MainActivity) getActivity()).hideNavigationDrawerIndicator();
+        setHasOptionsMenu(true);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +78,16 @@ public class WeightEntryFragment extends Fragment {
 
         TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_ONDESTROYVIEW);
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.weight_entry_submit_button)

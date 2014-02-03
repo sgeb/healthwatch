@@ -114,4 +114,15 @@ public class MainActivity extends Activity
         Log.d("xxx", "onFragmentInteraction");
 
     }
+
+    @Override
+    public void hideNavigationDrawerIndicator() {
+        mNavigationDrawerFragment.setDrawerIndicatorEnabled(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mNavigationDrawerFragment.setDrawerIndicatorEnabled(true);
+    }
 }
