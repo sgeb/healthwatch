@@ -105,11 +105,13 @@ public class WeightListFragment extends ListFragment {
             public void success(WeightSetFeed weightSetFeed, Response response) {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
 
-                final WeightListAdapter adapter = new WeightListAdapter(getActivity(),
-                        R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems());
-                setListAdapter(adapter);
-                setupListView(getListView(), adapter);
-                setListShown(true);
+                if (isResumed()) {
+                    final WeightListAdapter adapter = new WeightListAdapter(getActivity(),
+                            R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems());
+                    setListAdapter(adapter);
+                    setupListView(getListView(), adapter);
+                    setListShown(true);
+                }
             }
 
             @Override

@@ -57,6 +57,8 @@ public class AuthCallbackActivity extends Activity {
                 public void success(String accessToken, Response response) {
                     TestFlight.passCheckpoint(MyCheckpoints.AUTH_CALLBACK_FETCH_TOKEN_SUCCESS);
                     new Preferences(AuthCallbackActivity.this).setAuthAccessToken(accessToken);
+                    Toast.makeText(AuthCallbackActivity.this,
+                            R.string.auth_callback_authorized, Toast.LENGTH_LONG).show();
                     redirectToMainActivity();
                 }
 
@@ -74,9 +76,6 @@ public class AuthCallbackActivity extends Activity {
     }
 
     private void redirectToMainActivity() {
-        Toast.makeText(this, R.string.auth_callback_authorized, Toast.LENGTH_LONG)
-                .show();
-
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
