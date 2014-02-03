@@ -1,7 +1,6 @@
 package me.sgeb.healthwatch;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
@@ -102,7 +101,7 @@ public class WeightEntryFragment extends Fragment {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_ENTRY_SUBMIT_SUCCESS);
 
                 Toast.makeText(getActivity(), getString(R.string.weight_entry_submit_success), Toast.LENGTH_LONG).show();
-                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             }
 
             @Override
