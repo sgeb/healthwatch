@@ -1,7 +1,5 @@
 package me.sgeb.healthwatch.hgclient.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 
 import me.sgeb.healthwatch.hgclient.HgClient;
@@ -10,7 +8,6 @@ public class WeightSet {
     private String uri;
     private Date timestamp;
     private Double weight;
-    @SerializedName("fat_percent")
     private Double fatPercent;
 
     public WeightSet() {
