@@ -6,8 +6,7 @@ import android.widget.Checkable;
 import android.widget.RelativeLayout;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
-    private static final int[] STATE_CHECKABLE =
-            {android.R.attr.state_pressed};
+    private static final int[] STATE_SET = {android.R.attr.state_pressed};
     private boolean checked;
 
     public CheckableRelativeLayout(Context context) {
@@ -40,8 +39,10 @@ public class CheckableRelativeLayout extends RelativeLayout implements Checkable
 
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
-        int[] drawableState = super.onCreateDrawableState(extraSpace + STATE_CHECKABLE.length);
-        if (checked) mergeDrawableStates(drawableState, STATE_CHECKABLE);
+        int[] drawableState = super.onCreateDrawableState(extraSpace + STATE_SET.length);
+        if (checked) {
+            mergeDrawableStates(drawableState, STATE_SET);
+        }
 
         return drawableState;
     }
