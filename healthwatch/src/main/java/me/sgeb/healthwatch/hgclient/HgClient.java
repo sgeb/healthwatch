@@ -32,7 +32,7 @@ public interface HgClient {
 
     // Weight
 
-    @GET(PATH_WEIGHT)
+    @GET(PATH_WEIGHT + "?pageSize=500")
     @Headers(HEADER_ACCEPT + "application/vnd.com.runkeeper.WeightSetFeed+json")
     void getWeightSetFeed(Callback<WeightSetFeed> cb);
 

@@ -106,6 +106,12 @@ public class WeightListFragment extends ListFragment {
             public void success(WeightSetFeed weightSetFeed, Response response) {
                 TestFlight.passCheckpoint(MyCheckpoints.WEIGHT_LIST_FETCH_SUCCESS);
 
+                Log.d("xxx", "weightSetFeed size: " + weightSetFeed.getItems().size());
+                Log.d("xxx", "weightSetFeed: " + weightSetFeed.toString());
+
+                // TODO: can throw NPE - instantiate and assign final
+                new Datastore(getActivity()).updateWithRemoteWeightSetFeed(weightSetFeed).apply();
+
                 if (isResumed()) {
                     final WeightListAdapter adapter = new WeightListAdapter(getActivity(),
                             R.layout.layout_list_weightlist_listitem, weightSetFeed.getItems());
