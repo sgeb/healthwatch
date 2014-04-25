@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloCordova</name>
+<widget id="me.sgeb.healthwatch.cordova" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>HealthWatch</name>
     <description>
-        An Ionic Framework and Cordova project.
+        Track health and body information, securely stored in the HealthGraph.
+        This is a third-party application and is not endorsed by RunKeeper,
+        HealthGraph or FitnessKeeper.
     </description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+    <author email="serge.gebhardt@gmail.com" href="http://sgeb.me/">
+        Serge Gebhardt
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -15,5 +17,8 @@
     <preference name="DisallowOverscroll" value="true" />
     <feature name="StatusBar">
       <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+    <feature name="InAppBrowser">
+      <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
 </widget>
